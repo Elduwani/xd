@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body {
+   @apply h-screen w-screen;
+}
+
+#root {
+   @apply w-full h-full;
+}
