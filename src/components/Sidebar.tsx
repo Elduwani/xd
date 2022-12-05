@@ -1,10 +1,11 @@
-import { FiCircle, FiNavigation2 } from "react-icons/fi";
-import { BsSquare, BsTriangle, BsFillBookmarkCheckFill, BsLayersHalf } from 'react-icons/bs';
-import { MdOutlineMaximize, MdExtension } from 'react-icons/md';
-import { RiText, RiArtboard2Fill } from 'react-icons/ri';
-import { BiPen, BiSearch } from 'react-icons/bi';
-import { chx, cx } from "@/lib";
+import { cx } from "@/lib";
 import React from "react";
+import { BiPen, BiSearch } from 'react-icons/bi';
+import { BsFillBookmarkCheckFill, BsLayersHalf, BsSquare, BsTriangle } from 'react-icons/bs';
+import { FiCircle, FiNavigation2 } from "react-icons/fi";
+import { MdExtension, MdOutlineMaximize } from 'react-icons/md';
+import { RiArtboard2Fill, RiText } from 'react-icons/ri';
+import LayersPanel from "./LayersPanel";
 
 interface PanelState {
    isOpen: boolean
@@ -13,39 +14,42 @@ interface PanelState {
 
 export default function Sidebar() {
    const tools = useTools()
-   const [state, setState] = React.useState<PanelState>({
-      isOpen: true,
-      type: 'layers'
-   })
 
    return (
-      <div className={cx(
-         'bg-slate-800 border-b border-slate-700 text-white',
-         'flex flex-col justify-between',
-         chx('flex-1')
-      )}>
-         <ul className="p-3 py-4 text-2xl space-y-5">
-            {
-               tools.tools[0].map((t, i) => (
-                  <li
-                     key={i}
-                     onClick={() => tools.tools[1](i)}
-                     className={tools.styles}
-                  >{t}</li>
-               ))
-            }
-         </ul>
-         <ul className={cx("p-3 py-4 space-y-5")}>
-            {
-               tools.subTools[0].map((t, i) => (
-                  <li
-                     key={i}
-                     onClick={() => tools.subTools[1](i)}
-                     className={`${tools.styles} text-xl`}
-                  >{t}</li>
-               ))
-            }
-         </ul>
+      <div className="flex">
+         <div className={cx(
+            'bg-slate-800 border-r border-slate-700 text-white',
+            'flex flex-col justify-between',
+         )}>
+            <ul className="p-3 py-4 text-xl space-y-5">
+               {
+                  tools.tools[0].map((t, i) => (
+                     <li
+                        key={i}
+                        onClick={() => tools.tools[1](i)}
+                        className={tools.styles}
+                     >{t}</li>
+                  ))
+               }
+            </ul>
+            <ul className={cx("p-3 py-4 space-y-5")}>
+               {
+                  tools.subTools[0].map((t, i) => (
+                     <li
+                        key={i}
+                        onClick={() => tools.subTools[1](i)}
+                        className={`${tools.styles} text-xl`}
+                     >{t}</li>
+                  ))
+               }
+            </ul>
+         </div>
+         {
+            tools.panelState.isOpen &&
+            <div className="w-[260px]">
+               <LayersPanel />
+            </div>
+         }
       </div>
    )
 }
@@ -53,6 +57,10 @@ export default function Sidebar() {
 const useTools = () => {
    const [active, setActive] = React.useState<number>(0)
    const [subActive, setSubActive] = React.useState<number>(1)
+   const [panelState, setPanelState] = React.useState<PanelState>({
+      isOpen: true,
+      type: 'layers'
+   })
 
    const tools = [
       {
@@ -83,7 +91,10 @@ const useTools = () => {
 
    const subTools = [
       { icon: BsFillBookmarkCheckFill },
-      { icon: BsLayersHalf },
+      {
+         icon: BsLayersHalf,
+         onClick: () => setPanelState(st => ({ ...st, isOpen: !st.isOpen }))
+      },
       { icon: MdExtension },
    ].map((tool, i) => {
       return (
@@ -91,6 +102,7 @@ const useTools = () => {
             className={cx(
                subActive === i ? 'text-blue-600' : 'text-slate-400',
             )}
+            onClick={tool.onClick}
          />
       )
    })
@@ -98,6 +110,7 @@ const useTools = () => {
    return {
       tools: [tools, setActive] as [JSX.Element[], React.Dispatch<React.SetStateAction<number>>],
       subTools: [subTools, setSubActive] as [JSX.Element[], React.Dispatch<React.SetStateAction<number>>],
-      styles: 'w-8 h-8 grid place-items-center'
+      styles: 'w-8 h-8 grid place-items-center',
+      panelState
    }
 }
