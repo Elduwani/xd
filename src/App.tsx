@@ -1,5 +1,5 @@
 import Header from "@/components/Header"
-import AttributesPanel from "./components/AttributesPanel"
+import AttributesPanel from "./components/attributes"
 import Sidebar from "./components/Sidebar"
 
 function App() {
