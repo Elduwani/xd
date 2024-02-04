@@ -24,7 +24,7 @@
       ],
       "typeRoots": [
          "./node_modules/@types",
-         "./@types"
+         "src/assets/@types"
       ],
       "baseUrl": ".",
       "paths": {

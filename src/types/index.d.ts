@@ -1,7 +1,3 @@
-declare module 'react-csv';
-declare module 'uuid';
-declare module 'qs';
-
 type _Obj<T = any> = Record<string, T>
 
 interface _Tab {

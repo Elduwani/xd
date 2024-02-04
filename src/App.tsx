@@ -1,6 +1,7 @@
 import Header from "@/components/Header"
 import AttributesPanel from "./components/attributes"
 import Sidebar from "./components/Sidebar"
+import CreditCheck from "./components/CreditCheck"
 
 function App() {
    return (
@@ -9,9 +10,9 @@ function App() {
          <div className="content flex-1 flex bg-red-50">
             <Sidebar />
             <div className="canvas bg-slate-700 flex-1 grid place-items-center text-white">
-               Canvas
+               <CreditCheck />
             </div>
-            <AttributesPanel />
+            {/* <AttributesPanel /> */}
          </div>
       </div>
    )
